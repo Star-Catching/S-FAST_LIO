@@ -163,8 +163,9 @@ void imu_cbk(const sensor_msgs::Imu::ConstPtr &msg_in)
         msg->header.stamp =
             ros::Time().fromSec(timediff_lidar_wrt_imu + msg_in->header.stamp.toSec());
     }
-
+    //?这里的time_diff_lidar_to_imu 什么意思
     msg->header.stamp = ros::Time().fromSec(msg_in->header.stamp.toSec() - time_diff_lidar_to_imu);
+
 
     double timestamp = msg->header.stamp.toSec();
 
@@ -203,7 +204,7 @@ bool sync_packages(MeasureGroup &meas)
             lidar_end_time = meas.lidar_beg_time + lidar_mean_scantime;
             ROS_WARN("Too few input point cloud!\n");
         }
-        else if (meas.lidar->points.back().curvature / double(1000) < 0.5 * lidar_mean_scantime)
+        else if (meas.lidar->points.back().curvature / double(1000) < 0.5 * lidar_mean_scantime)  // 可能这一帧雷达数据比较少 或被遮挡等情况
         {
             lidar_end_time = meas.lidar_beg_time + lidar_mean_scantime;
         }
